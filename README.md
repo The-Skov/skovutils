@@ -8,6 +8,8 @@ Install directly from a GitHub repository (replace `USER` and `REPO` with your r
 
 ```bash
 pip install git+https://github.com/The-Skov/skovutils.git
+```
+
 # skovutils
 
 Small utilities used in microbiome analysis.
