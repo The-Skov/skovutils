@@ -11,6 +11,8 @@ Install straight from GitHub (PEP 517 build via `pip`).
 pip install git+https://github.com/The-Skov/skovutils.git
 ```
 
+As numba is currently not fully supported for python 3.14 if it fails run:
+
 The package depends on `numpy`, `numba`, `pandas`, `scipy`, and `scikit-bio`.
 Optional examples may also use `pingouin`.
 
