@@ -4,7 +4,6 @@ Small utilities used in microbiome analysis.
 
 Installation
 -
-Install directly from a GitHub repository (replace `USER` and `REPO` with your repo):
 
 ```bash
 pip install git+https://github.com/The-Skov/skovutils.git
@@ -15,12 +14,6 @@ pip install git+https://github.com/The-Skov/skovutils.git
 Small utilities used in microbiome analysis.
 
 **Installation**
-
-Install directly from GitHub (replace `USER`/`REPO` if different):
-
-```bash
-pip install git+https://github.com/The-Skov/skovutils.git
-```
 
 Some examples below require `scikit-bio`:
 
