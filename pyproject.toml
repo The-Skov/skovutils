@@ -1,3 +1,30 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "skovutils"
+version = "0.1.0"
+description = "Small utility functions used in the MicrobeTakeover project"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Mads Skov" }]
+dependencies = [
+	"numpy>=1.22",
+	"numba>=0.57",
+	"pandas>=1.5",
+	"scipy>=1.8",
+	"scikit-bio>=0.5.10",
+]
+
+[project.urls]
+Homepage = "https://github.com/The-Skov/skovutils"
+Repository = "https://github.com/The-Skov/skovutils"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

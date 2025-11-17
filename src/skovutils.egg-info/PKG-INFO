@@ -1,3 +1,21 @@
+Metadata-Version: 2.4
+Name: skovutils
+Version: 0.1.0
+Summary: Small utility functions used in the MicrobeTakeover project
+Author: Mads Skov
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/The-Skov/skovutils
+Project-URL: Repository, https://github.com/The-Skov/skovutils
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.22
+Requires-Dist: numba>=0.57
+Requires-Dist: pandas>=1.5
+Requires-Dist: scipy>=1.8
+Requires-Dist: scikit-bio>=0.5.10
+Dynamic: license-file
+
 # skovutils
 
 Small utility helpers for phylogenetic clustering, repeated-measures correlation,

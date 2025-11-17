@@ -1,21 +1,30 @@
 """
-Filtering utilities for skbio Tables.
+Filtering utilities for scikit-bio tables.
 """
+
+from __future__ import annotations
 
 
 # --- Minimum abundance and prevalence filtering ---
-def minmin(table, abundance=0.01, prevalence=0.1):
+def minmin(table, abundance: float = 0.01, prevalence: float = 0.1):
     """
     Filter a skbio Table to only include observations that meet minimum
     abundance and prevalence thresholds.
 
-    Parameters:
-    - table: skbio.Table to be filtered
-    - abundance: minimum abundance threshold (float)
-    - prevalence: minimum prevalence threshold (float)
+    Parameters
+    ----------
+    table : skbio.Table
+        Table to be filtered (observations x samples).
+    abundance : float, default=0.01
+        Minimum abundance threshold for inclusion.
+    prevalence : float, default=0.1
+        Fraction of samples that must exceed ``abundance``.
 
-    Returns:
-    - skbio.Table filtered to include only observations meeting the criteria
+    Returns
+    -------
+    skbio.Table
+        Filtered table containing only the observations that meet the
+        abundance and prevalence criteria.
     """
     # Convert table to DataFrame
     df = table.to_dataframe()
@@ -38,22 +47,26 @@ def minmin(table, abundance=0.01, prevalence=0.1):
     ].index.tolist()
 
     # Filter the table to include only selected observations
-    table_filtered = table.filter(observations_to_keep, axis='observation')
+    table_filtered = table.filter(observations_to_keep, axis="observation")
 
     return table_filtered
 
-# -- Test ---
-if __name__ == "__main__":
+
+if __name__ == "__main__":  # pragma: no cover - usage example
     from skbio import Table
     import numpy as np
 
     # Create a sample skbio Table
-    data = np.array([[0.0, 0.02, 0.03],
-                     [0.1, 0.0, 0.0],
-                     [0.05, 0.06, 0.07],
-                     [0.0, 0.0, 0.0]])
-    obs_ids = ['obs1', 'obs2', 'obs3', 'obs4']
-    samp_ids = ['samp1', 'samp2', 'samp3']
+    data = np.array(
+        [
+            [0.0, 0.02, 0.03],
+            [0.1, 0.0, 0.0],
+            [0.05, 0.06, 0.07],
+            [0.0, 0.0, 0.0],
+        ]
+    )
+    obs_ids = ["obs1", "obs2", "obs3", "obs4"]
+    samp_ids = ["samp1", "samp2", "samp3"]
     table = Table(data, obs_ids, samp_ids)
 
     # Apply minmin filtering
@@ -61,4 +74,3 @@ if __name__ == "__main__":
 
     # Print the filtered table
     print(filtered_table)
-

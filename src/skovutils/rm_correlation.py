@@ -1,16 +1,18 @@
 """
 Repeated measures correlation implementation.
-Based on: Bakdash JZ, Marusich LR (2017). "Repeated Measures Correlation."""
+Based on: Bakdash JZ, Marusich LR (2017). "Repeated Measures Correlation."
+"""
 
+from __future__ import annotations
 
-
-#-- Imports ---
+# -- Imports ---
 import numpy as np
 from numba import njit
 from scipy import stats
 import pandas as pd
 
-#-- Numba helper functions ---
+
+# -- Numba helper functions ---
 @njit
 def _per_subject_sums_counts(subj_idx, x, y, K):
     """Compute per-subject sums and counts."""
@@ -49,18 +51,25 @@ def _drop_nans(x, y, subject):
     valid_idx = ~np.isnan(x) & ~np.isnan(y) & ~np.isnan(subject)
     return x[valid_idx], y[valid_idx], subject[valid_idx]
 
+
 # -- Main function ---
-def rmcorr_stats(data, x, y, subject, alpha=0.05):
+def rmcorr_stats(data: pd.DataFrame, x: str, y: str, subject: str, alpha: float = 0.05):
     """
     Compute repeated measures correlation statistics.
 
-    Parameters:
-    - data: pandas DataFrame containing the data
-    - x, y, subject: column names for variables and subject ID
-    - alpha: significance level for confidence interval
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        Input dataframe containing the variables and subject identifier.
+    x, y, subject : str
+        Column names in ``data`` for the repeated measurements and subject IDs.
+    alpha : float, default=0.05
+        Significance level used for the confidence interval.
 
-    Returns:
-    - Dictionary with r, dof, pval, CI95%, and power
+    Returns
+    -------
+    dict
+        Dictionary with r, dof, p-value, CI95%, and post-hoc power.
     """
     x = np.asarray(data[x].values, dtype=np.float64)
     y = np.asarray(data[y].values, dtype=np.float64)
@@ -112,7 +121,7 @@ def rmcorr_stats(data, x, y, subject, alpha=0.05):
     ci95 = [np.tanh(lo), np.tanh(hi)]
 
     # Post-hoc power
-    f2 = r_clamped**2 / (1.0 - r_clamped**2)
+    f2 = r_clamped ** 2 / (1.0 - r_clamped ** 2)
     ncp = np.sqrt(f2 * dof)
     crit = stats.t.ppf(1.0 - alpha / 2.0, dof)
     power = stats.nct.sf(crit, dof, ncp) + stats.nct.cdf(-crit, dof, ncp)
@@ -126,22 +135,21 @@ def rmcorr_stats(data, x, y, subject, alpha=0.05):
     }
 
 
-# --- Example usage ---
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover - usage example
     from pingouin import rm_corr
 
     rng = np.random.default_rng()
     subj = np.repeat(np.arange(5), 6)
     x = rng.normal(size=subj.size)
     y = 0.7 * (x - np.repeat([0, 1, 2, 3, 4], 6)) + rng.normal(scale=0.5, size=subj.size)
-    data = pd.DataFrame({'x': x, 'y': y, 'subject': subj})
+    data = pd.DataFrame({"x": x, "y": y, "subject": subj})
 
-    res_custom = rmcorr_stats(data, 'x', 'y', 'subject')
+    res_custom = rmcorr_stats(data, "x", "y", "subject")
     print("Custom rmcorr results:")
     for k, v in res_custom.items():
         print(f"{k} : {v}")
 
-    res_pg = rm_corr(data, x='x', y='y', subject='subject')
+    res_pg = rm_corr(data, x="x", y="y", subject="subject")
     print("\nPingouin results:")
     for k, v in res_pg.items():
         print(f"{k} : {v}")
