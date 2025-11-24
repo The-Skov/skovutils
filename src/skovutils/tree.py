@@ -123,7 +123,11 @@ def cluster_tips(tree: TreeNode, threshold: float):
     dict
         Mapping cluster_id -> list of tip names.
     """
-    tip_names, D = tree_to_distance_matrix(tree)
+    tips = list(tree.tips())
+    tip_names = [t.name for t in tips]
+
+    # Fast distance matrix
+    D = np.array(tree.cophenet().data)
     labels = cluster(D, float(threshold))
     cluster_dict = {}
     for name, cid in zip(tip_names, labels):
